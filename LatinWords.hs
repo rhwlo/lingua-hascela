@@ -4,9 +4,11 @@ import Data.Char (isSpace)
 import Data.List (isInfixOf, isPrefixOf)
 import Data.Maybe (fromMaybe)
 import Control.Monad (join)
+import WhitakerLatin hiding (Verb(..))
+import qualified WhitakerLatin as WL
 import qualified Data.Map as DM
 
-data Verb = Regular Conjugation String String String (Maybe String)
+data Verb = Regular Conjugation VerbalCategory String String (Maybe String)
             | Irregular String String String (Maybe String) IrregularTable deriving (Show, Eq)
 data Noun = NounDeclension NounGender String String deriving (Show, Eq, Read)
 data Adjective = AdjDeclension String String deriving (Show, Eq, Read)
@@ -23,6 +25,9 @@ type ConjugationTable = DM.Map (Conjugation, Mood, Voice, Tense, GrammaticalPers
 type ConjugationTuple = ((Conjugation, Mood, Voice, Tense, GrammaticalPerson, GrammaticalNumber), String)
 type IrregularTable = DM.Map (Mood, Voice, Tense, GrammaticalPerson, GrammaticalNumber) String
 type IrregularConjugationTuple = ((Mood, Voice, Tense, GrammaticalPerson, GrammaticalNumber), String)
+
+fromWhitakerVerb :: WL.Verb -> Verb
+fromWhitakerVerb (WL.Regular conj vcat presStem perfStem ppStem) = Regular conj vcat presStem perfStem ppStem
 
 readRegularTable :: IO ConjugationTable
 readRegularTable = do
@@ -115,19 +120,21 @@ isPerfective :: Tense -> Bool
 isPerfective = flip elem [Futureperfect, Perfect, Pluperfect]
 
 conjugate :: ConjugationTable -> Mood -> Voice -> Tense -> GrammaticalPerson -> GrammaticalNumber -> Verb -> Maybe String
-conjugate _ _ Passive _ _ _ (Regular _ _ _ _ Nothing)       = Nothing
+-- conjugation category presStem perfStem pperfStem
+conjugate _ _ Passive _ _ _ (Regular _ Deponent _ _ _)      = Nothing
+conjugate _ _ Passive _ _ _ (Regular _ Intransitive _ _ _)  = Nothing
 conjugate _ _ Passive _ _ _ (Irregular _ _ _ Nothing _ )    = Nothing
 conjugate _ Subjunctive _ Future _ _ _                      = Nothing
 conjugate _ Subjunctive _ Futureperfect _ _ _               = Nothing
 conjugate table mood voice tense person number verb         = case verb of
-  (Regular conjugation _ infinitive perfect perfectPassiveParticiple) ->
+  (Regular conjugation Deponent presStem perfStem _) ->
+    conjugate table mood Passive tense person number (Regular conjugation Intransitive presStem "" (Just perfStem))
+  (Regular conjugation _ presStem perfStem maybePPfStem) ->
     case (voice, isPerfective tense) of
-      (Passive, True)     -> perfectPassiveParticiple
-      (Active, True)      -> Just (perfectStem ++ ending)
-      (_, False)          -> Just (stem ++ ending)
+      (Passive, True)     -> fmap (++ "um") maybePPfStem
+      (Active, True)      -> Just (perfStem ++ ending)
+      (_, False)          -> Just (presStem ++ ending)
     where
-      stem = pord 3 infinitive
-      perfectStem = init perfect
       ending = table DM.! (conjugation, mood, voice, tense, person, number)
   (Irregular _ _ _ _ conjugationTable) ->
     if (mood, voice, tense, person, number) `elem` DM.keys conjugationTable
