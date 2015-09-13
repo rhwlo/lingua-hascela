@@ -1,6 +1,5 @@
 module LatinWords where
 
-import Control.Applicative
 import Data.Char (isSpace)
 import Data.List (isInfixOf, isPrefixOf)
 import Data.Maybe (fromMaybe)
@@ -120,18 +119,17 @@ conjugate _ _ Passive _ _ _ (Regular _ _ _ _ Nothing)       = Nothing
 conjugate _ _ Passive _ _ _ (Irregular _ _ _ Nothing _ )    = Nothing
 conjugate _ Subjunctive _ Future _ _ _                      = Nothing
 conjugate _ Subjunctive _ Futureperfect _ _ _               = Nothing
-conjugate table mood voice tense person number verb         = case (verb) of
-  (Regular conjugation firstPerson infinitive perfect perfectPassiveParticiple) ->
+conjugate table mood voice tense person number verb         = case verb of
+  (Regular conjugation _ infinitive perfect perfectPassiveParticiple) ->
     case (voice, isPerfective tense) of
       (Passive, True)     -> perfectPassiveParticiple
       (Active, True)      -> Just (perfectStem ++ ending)
       (_, False)          -> Just (stem ++ ending)
     where
-      (Regular conjugation firstPerson infinitive perfect perfectPassiveParticiple) = verb
       stem = pord 3 infinitive
       perfectStem = init perfect
       ending = table DM.! (conjugation, mood, voice, tense, person, number)
-  (Irregular firstPerson infinitive perfect perfectPassiveParticiple conjugationTable) ->
-    case ((mood, voice, tense, person, number) `elem` DM.keys conjugationTable) of
-      True    -> Just $ conjugationTable DM.! (mood, voice, tense, person, number)
-      False   -> Nothing
+  (Irregular _ _ _ _ conjugationTable) ->
+    if (mood, voice, tense, person, number) `elem` DM.keys conjugationTable
+      then Just $ conjugationTable DM.! (mood, voice, tense, person, number)
+      else Nothing
