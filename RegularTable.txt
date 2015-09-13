@@ -1,0 +1,43 @@
+1
+  Indicative
+    Active
+      Present
+--      1s        1p            2s        2p          3s        3p
+        "o"       "amus"        "as"      "atis"      "at"      "ant"
+      Imperfect
+        "abam"    "abamus"      "abas"    "abatis"    "abat"    "abant"
+      Future
+        "abo"     "abimus"      "abis"    "abitis"    "abit"    "abunt"
+      Perfect
+        "i"       "imus"        "isti"    "istis"     "it"      "erunt"
+      Pluperfect
+        "eram"    "eramus"      "eras"    "eratis"    "erat"    "erant"
+      Futureperfect
+        "ero"     "erimus"      "eris"    "eritis"    "erit"    "erint"
+    Passive
+      Present
+        "or"      "amur"        "aris"    "amini"     "atur"    "antur"
+      Imperfect
+        "abar"    "abamur"      "abaris"  "abamini"   "abatur"  "abantur"
+      Future
+        "abor"    "abimur"      "aberis"  "abimini"   "abitur"  "abuntur"
+  Subjunctive
+    Active
+      Present
+        "em"      "emus"        "es"      "etis"      "et"      "ent"
+      Imperfect
+        "arem"    "aremus"      "ares"    "aretis"    "aret"    "arent"
+      Perfect
+        "averim"  "averimus"    "averis"  "averitis"  "averit"  "averint"
+      Pluperfect
+        "avissem" "avissemus"   "avisses" "avissetis" "avisset" "avissent"
+    Passive
+      Present
+        "er"      "emur"        "eris"    "emini"     "etur"    "entur"
+      Imperfect
+        "arer"    "aremur"      "areris"  "aremini"   "aretur"  "arentur"
+  Imperative
+    Active
+        "ama"     "amate"
+    Passive
+        "amare"   "amamini"
