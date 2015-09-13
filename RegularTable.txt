@@ -3,167 +3,167 @@
     Active
       Present
 --      1s        1p            2s        2p          3s        3p
-        "o"       "amus"        "as"      "atis"      "at"      "ant"
+        "ō"       "āmus"        "ās"      "ātis"      "at"      "ant"
       Imperfect
-        "abam"    "abamus"      "abas"    "abatis"    "abat"    "abant"
+        "ābam"    "ābāmus"      "ābās"    "ābātis"    "ābat"    "ābant"
       Future
-        "abo"     "abimus"      "abis"    "abitis"    "abit"    "abunt"
+        "ābō"     "ābimus"      "ābis"    "ābitis"    "ābit"    "ābunt"
       Perfect
-        "i"       "imus"        "isti"    "istis"     "it"      "erunt"
+        "ī"       "imus"        "istī"    "istis"     "it"      "ērunt"
       Pluperfect
-        "eram"    "eramus"      "eras"    "eratis"    "erat"    "erant"
+        "eram"    "erāmus"      "erās"    "erātis"    "erat"    "erant"
       Futureperfect
-        "ero"     "erimus"      "eris"    "eritis"    "erit"    "erint"
+        "erō"     "erimus"      "eris"    "eritis"    "erit"    "erint"
     Passive
       Present
-        "or"      "amur"        "aris"    "amini"     "atur"    "antur"
+        "or"      "āmur"        "āris"    "āminī"     "ātur"    "antur"
       Imperfect
-        "abar"    "abamur"      "abaris"  "abamini"   "abatur"  "abantur"
+        "ābar"    "ābāmur"      "ābāris"  "ābāminī"   "ābātur"  "ābantur"
       Future
-        "abor"    "abimur"      "aberis"  "abimini"   "abitur"  "abuntur"
+        "ābor"    "ābimur"      "āberis"  "ābiminī"   "ābitur"  "ābuntur"
   Subjunctive
     Active
       Present
-        "em"      "emus"        "es"      "etis"      "et"      "ent"
+        "em"      "ēmus"        "ēs"      "ētis"      "et"      "ent"
       Imperfect
-        "arem"    "aremus"      "ares"    "aretis"    "aret"    "arent"
+        "ārem"    "ārēmus"      "ārēs"    "ārētis"    "āret"    "ārent"
       Perfect
         "erim"    "erimus"      "eris"    "eritis"    "erit"    "erint"
       Pluperfect
         "issem"   "issemus"     "isses"   "issetis"   "isset"   "issent"
     Passive
       Present
-        "er"      "emur"        "eris"    "emini"     "etur"    "entur"
+        "er"      "ēmur"        "ēris"    "ēminī"     "ētur"    "entur"
       Imperfect
-        "arer"    "aremur"      "areris"  "aremini"   "aretur"  "arentur"
+        "ārer"    "ārēmur"      "ārēris"  "ārēminī"   "ārētur"  "ārentur"
   Imperative
     Active
-        "ama"     "amate"
+        "ā"       "āte"
     Passive
-        "amare"   "amamini"
+        "āre"     "āminī"
 2
   Indicative
     Active
       Present
-        "eo"      "emus"        "es"      "etis"      "et"      "ent"
+        "eō"      "ēmus"        "ēs"      "ētis"      "et"      "ent"
       Imperfect
-        "ebam"    "ebamus"      "ebas"    "ebatis"    "ebat"    "ebant"
+        "ēbam"    "ēbāmus"      "ēbās"    "ēbātis"    "ēbat"    "ēbant"
       Future
-        "ebo"     "ebimus"      "ebis"    "ebitis"    "ebit"    "ebunt"
+        "ēbō"     "ēbimus"      "ēbis"    "ēbitis"    "ēbit"    "ēbunt"
       Perfect
-        "i"       "imus"        "isti"    "istis"     "it"      "erunt"
+        "ī"       "imus"        "istī"    "istis"     "it"      "ērunt"
       Pluperfect
-        "eram"    "eramus"      "eras"    "eratis"    "erat"    "erant"
+        "eram"    "erāmus"      "erās"    "erātis"    "erat"    "erant"
       Futureperfect
-        "ero"     "erimus"      "eris"    "eritis"    "erit"    "erint"
+        "erō"     "erimus"      "eris"    "eritis"    "erit"    "erint"
     Passive
       Present
-        "eor"     "emur"        "eris"    "emini"     "etur"    "entur"
+        "eor"     "ēmur"        "ēris"    "ēminī"     "ētur"    "entur"
       Imperfect
-        "ebar"    "ebamur"      "ebaris"  "ebamini"   "ebatur"  "ebantur"
+        "ēbar"    "ēbāmur"      "ēbāris"  "ēbaminī"   "ēbātur"  "ēbantur"
       Future
-        "ebor"    "ebimur"      "eberis"  "ebimini"   "ebitur"  "ebuntur"
+        "ēbor"    "ēbimur"      "ēberis"  "ēbiminī"   "ēbitur"  "ēbuntur"
   Subjunctive
     Active
       Present
-        "eam"     "eamus"       "eas"     "eatis"     "eat"     "eant"
+        "eam"     "eāmus"       "eās"     "eātis"     "eat"     "eant"
       Imperfect
-        "erem"    "eremus"      "eres"    "eretis"    "eret"    "erent"
+        "ērem"    "ēremus"      "ēres"    "ēretis"    "ēret"    "ērent"
       Perfect
         "erim"    "erimus"      "eris"    "eritis"    "erit"    "erint"
       Pluperfect
         "issem"   "issemus"     "isses"   "issetis"   "isset"   "issent"
     Passive
       Present
-        "ear"     "eamur"       "earis"   "eamini"    "eatur"   "eantur"
+        "ear"     "eāmur"       "eāris"   "eaminī"    "eātur"   "eantur"
       Imperfect
-        "erer"    "eremur"      "ereris"  "eremini"   "eretur"  "erentur"
+        "ērer"    "ēremur"      "ēreris"  "ēreminī"   "ēretur"  "ērentur"
   Imperative
     Active
-        "e"       "ete"
+        "ē"       "ēte"
     Passive
-        "ere"     "emini"
+        "ēre"     "ēminī"
 3
   Indicative
     Active
       Present
-        "o"       "imus"        "is"      "itis"      "it"      "unt"
+        "ō"       "imus"        "is"      "itis"      "it"      "unt"
       Imperfect
-        "ebam"    "ebamus"      "ebas"    "ebatis"    "ebat"    "ebant"
+        "ēbam"    "ēbāmus"      "ēbās"    "ēbātis"    "ēbat"    "ēbant"
       Future
-        "am"      "emus"        "es"      "etis"      "et"      "ent"
+        "am"      "ēmus"        "ēs"      "ētis"      "et"      "ent"
       Perfect
-        "i"       "imus"        "isti"    "istis"     "it"      "erunt"
+        "ī"       "imus"        "istī"    "istis"     "it"      "ērunt"
       Pluperfect
-        "eram"    "eramus"      "eras"    "eratis"    "erat"    "erant"
+        "eram"    "erāmus"      "erās"    "erātis"    "erat"    "erant"
       Futureperfect
-        "ero"     "erimus"      "eris"    "eritis"    "erit"    "erint"
+        "erō"     "erimus"      "eris"    "eritis"    "erit"    "erint"
     Passive
       Present
-        "or"      "imur"        "eris"    "imini"     "itur"    "untur"
+        "or"      "imur"        "eris"    "iminī"     "itur"    "untur"
       Imperfect
-        "ebar"    "ebamur"      "ebaris"  "ebamini"   "ebatur"  "ebantur"
+        "ēbar"    "ēbāmur"      "ēbāris"  "ēbaminī"   "ēbātur"  "ēbantur"
       Future
-        "ar"      "emur"        "eris"    "emini"     "etur"    "entur"
+        "ar"      "ēmur"        "ēris"    "ēminī"     "ētur"    "entur"
   Subjunctive
     Active
       Present
-        "am"      "amus"        "as"      "atis"      "at"      "ant"
+        "am"      "āmus"        "ās"      "ātis"      "at"      "ant"
       Imperfect
-        "erem"    "eremus"      "eres"    "eretis"    "eret"    "erent"
+        "ērem"    "ēremus"      "ēres"    "ēretis"    "ēret"    "ērent"
       Perfect
         "erim"    "erimus"      "eris"    "eritis"    "erit"    "erint"
       Pluperfect
         "issem"   "issemus"     "isses"   "issetis"   "isset"   "issent"
     Passive
       Present
-        "ar"      "amur"        "aris"    "amini"     "atur"    "antur"
+        "ar"      "āmur"        "āris"    "aminī"     "ātur"    "antur"
       Imperfect
-        "erer"    "eremur"      "ereris"  "eremini"   "eretur"  "erentur"
+        "ērer"    "ēremur"      "ēreris"  "ēreminī"   "ēretur"  "ērentur"
   Imperative
     Active
         "e"       "ite"
     Passive
-        "ere"     "imini"
+        "ere"     "iminī"
 4
   Indicative
     Active
       Present
-        "io"      "imus"        "is"      "itis"      "it"      "iunt"
+        "iō"      "īmus"        "īs"      "ītis"      "it"      "iunt"
       Imperfect
-        "iebam"   "iebamus"     "iebas"   "iebatis"   "iebat"   "iebant"
+        "iēbam"   "iēbāmus"     "iēbās"   "iēbātis"   "iēbat"   "iebant"
       Future
-        "iam"     "iemus"       "ies"     "ietis"     "iet"     "ient"
+        "iam"     "iēmus"       "iēs"     "iētis"     "iet"     "ient"
       Perfect
-        "i"       "imus"        "isti"    "istis"     "it"      "erunt"
+        "ī"       "imus"        "istī"    "istis"     "it"      "ērunt"
       Pluperfect
-        "eram"    "eramus"      "eras"    "eratis"    "erat"    "erant"
+        "eram"    "erāmus"      "erās"    "erātis"    "erat"    "erant"
       Futureperfect
-        "ero"     "erimus"      "eris"    "eritis"    "erit"    "erint"
+        "erō"     "erimus"      "eris"    "eritis"    "erit"    "erint"
     Passive
       Present
-        "ior"     "imur"        "iris"    "imini"     "itur"    "iuntur"
+        "ior"     "īmur"        "īris"    "īminī"     "ītur"    "iuntur"
       Imperfect
-        "iebar"   "iebamur"     "iebaris" "iebamini"  "iebatur" "iebantur"
+        "iēbar"   "iēbāmur"     "iēbāris" "iēbāminī"  "iēbātur" "iēbantur"
       Future
-        "iar"     "iemur"       "ieris"   "iemini"    "ietur"   "ientur"
+        "iar"     "iēmur"       "iēris"   "iēminī"    "iētur"   "iēntur"
   Subjunctive
     Active
       Present
-        "iam"     "iamus"       "ias"     "iatis"     "iat"     "iant"
+        "iam"     "iāmus"       "iās"     "iātis"     "iat"     "iant"
       Imperfect
-        "irem"    "iremus"      "ires"    "iretis"    "iret"    "irent"
+        "īrem"    "īrēmus"      "īrēs"    "īrētis"    "īret"    "īrent"
       Perfect
         "erim"    "erimus"      "eris"    "eritis"    "erit"    "erint"
       Pluperfect
         "issem"   "issemus"     "isses"   "issetis"   "isset"   "issent"
     Passive
       Present
-        "iar"     "iamur"       "iaris"   "iamini"    "iatur"   "iantur"
+        "iar"     "iāmur"       "iāris"   "iaminī"    "iātur"   "iantur"
       Imperfect
-        "irer"    "iremur"      "ireris"  "iremini"   "iretur"  "irentur"
+        "īrer"    "īrēmur"      "īrēris"  "īrēminī"   "īrētur"  "īrentur"
   Imperative
     Active
-        "i"       "ite"
+        "ī"       "īte"
     Passive
-        "ire"     "imini"
+        "īre"     "īminī"
