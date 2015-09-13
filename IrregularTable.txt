@@ -1,0 +1,29 @@
+"sum" "esse" "fui"
+  Indicative
+    Active
+      Present
+--      1s        1p            2s        2p          3s        3p
+        "sum"     "sumus"       "es"      "estis"     "est"     "sunt"
+      Imperfect
+        "eram"    "eramus"      "eras"    "eratis"    "erat"    "erant"
+      Future
+        "ero"     "erimus"      "eris"    "eritis"    "erit"    "erunt"
+      Perfect
+        "fui"     "fuimus"      "fuisti"  "fuistis"   "fuit"    "fuerunt"
+      Pluperfect
+        "fueram"  "fueramus"    "fueras"  "fueratis"  "fuerat"  "fuerant"
+      Futureperfect
+        "fuero"   "fuerimus"    "fueris"  "fueritis"  "fuerit"  "fuerint"
+  Subjunctive
+    Active
+      Present
+        "sim"     "simus"       "sis"     "sitis"     "sit"     "sint"
+      Imperfect
+        "essem"   "essemus"     "esses"   "essetis"   "esset"   "essent"
+      Perfect
+        "fuerim"  "fuerimus"    "fueris"  "fueritis"  "fuerit"  "fuerint"
+      Pluperfect
+        "fuissem" "fuissemus"   "fuisses" "fuissetis" "fuisset" "fuissent"
+  Imperative
+    Active
+        "es"      "este"

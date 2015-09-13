@@ -1,13 +1,14 @@
 module LatinWords where
 
 import Control.Applicative
-import Data.Char
-import Data.List
+import Data.Char (isSpace)
+import Data.List (isInfixOf, isPrefixOf)
 import Data.Maybe (fromMaybe)
 import Control.Monad (join)
 import qualified Data.Map as DM
 
-data Verb = Regular Conjugation String String String (Maybe String) | Irregular String deriving (Show, Eq)
+data Verb = Regular Conjugation String String String (Maybe String)
+            | Irregular String String String (Maybe String) IrregularTable deriving (Show, Eq)
 data Noun = NounDeclension NounGender String String deriving (Show, Eq, Read)
 data Adjective = AdjDeclension String String deriving (Show, Eq, Read)
 type Conjugation = Int
@@ -21,6 +22,8 @@ data GrammaticalNumber = Singular | Plural deriving (Show, Read, Eq, Ord)
 
 type ConjugationTable = DM.Map (Conjugation, Mood, Voice, Tense, GrammaticalPerson, GrammaticalNumber) String
 type ConjugationTuple = ((Conjugation, Mood, Voice, Tense, GrammaticalPerson, GrammaticalNumber), String)
+type IrregularTable = DM.Map (Mood, Voice, Tense, GrammaticalPerson, GrammaticalNumber) String
+type IrregularConjugationTuple = ((Mood, Voice, Tense, GrammaticalPerson, GrammaticalNumber), String)
 
 readRegularTable :: IO ConjugationTable
 readRegularTable = do
@@ -29,12 +32,6 @@ readRegularTable = do
   where
     fromConjugationTable :: [String] -> Conjugation -> Mood -> Voice -> Tense -> [ConjugationTuple]
     fromConjugationTable corpus c m v t = let
-        conjugationSection :: [String]
-        conjugationSection = splitSection c corpus
-        moodSection :: [String]
-        moodSection = splitSection m conjugationSection
-        voiceSection :: [String]
-        voiceSection = splitSection v moodSection
         tenseSection :: [String]
         tenseSection = splitSection t $ splitSection v $ splitSection m $ splitSection c corpus
         endings :: [String]
@@ -44,22 +41,65 @@ readRegularTable = do
         numbers = [Singular, Plural]
       in
         zip headings endings
-    conjugations = [1, 2, 3, 4]
-    moods = [Indicative, Subjunctive]
-    voices = [Active, Passive]
-    tenses = [Future, Futureperfect, Imperfect, Pluperfect, Present, Perfect]
-    splitSection :: Show a => a -> [String] -> [String]
-    splitSection _ [] = []
-    splitSection keyWord fileLines = let
+
+readIrregularTable :: IO [Verb]
+readIrregularTable = do
+    irregularTableLines <- (filter (not . isPrefixOf "--") . lines) <$> readFile "IrregularTable.txt"
+    return (verbsFrom irregularTableLines)
+  where
+    verbsFrom :: [String] -> [Verb]
+    verbsFrom corpus = flip fmap (findVerbs corpus) $ \(firstPerson, infinitive, perfect, maybePassive) ->
+      Irregular firstPerson infinitive perfect maybePassive (getConjugations corpus firstPerson)
+    findVerbs :: [String] -> [(String, String, String, Maybe String)]
+    findVerbs corpus = flip fmap (filter (not . isSpace . head) corpus) $ \line -> let
+        readLine :: [String]
+        readLine = map read (words line)
+        (firstPerson:(infinitive:(perfect:theRest))) = readLine
+        maybePassive = maybeLast theRest
+      in (firstPerson, infinitive, perfect, maybePassive)
+    getConjugations :: [String] -> String -> IrregularTable
+    getConjugations corpus firstPerson = let
         startOfSection :: [String]
-        startOfSection = dropWhile (not . isInfixOf (show keyWord)) fileLines
-        indentFor :: String -> String
-        indentFor = takeWhile isSpace
-        sectionIndent :: String
-        sectionIndent = indentFor (head startOfSection)
+        startOfSection = dropWhile (not . isPrefixOf (show firstPerson)) corpus
         section :: [String]
-        section = takeWhile ((/= sectionIndent) . indentFor) (fromMaybe [] $ maybeTail startOfSection)
-      in section
+        section = takeWhile (isSpace . head) (fromMaybe [] $ maybeTail startOfSection)
+      in DM.fromList $ join $ fromConjugationTable section <$> moods <*> voices <*> tenses
+    fromConjugationTable :: [String] -> Mood -> Voice -> Tense -> [IrregularConjugationTuple]
+    fromConjugationTable corpus m v t = let
+        tenseSection :: [String]
+        tenseSection = splitSection t $ splitSection v $ splitSection m corpus
+        endings :: [String]
+        endings = map read $ words (fromMaybe "" $ maybeLast tenseSection)
+        headings = (\p n -> (m, v, t, p, n)) <$> persons <*> numbers
+        persons = [1, 2, 3]
+        numbers = [Singular, Plural]
+      in
+        zip headings endings
+
+conjugations :: [Conjugation]
+conjugations = [1, 2, 3, 4]
+
+moods :: [Mood]
+moods = [Indicative, Subjunctive]
+
+voices :: [Voice]
+voices = [Active, Passive]
+
+tenses :: [Tense]
+tenses = [Future, Futureperfect, Imperfect, Pluperfect, Present, Perfect]
+
+splitSection :: Show a => a -> [String] -> [String]
+splitSection _ [] = []
+splitSection keyWord fileLines = let
+    startOfSection :: [String]
+    startOfSection = dropWhile (not . isInfixOf (show keyWord)) fileLines
+    indentFor :: String -> String
+    indentFor = takeWhile isSpace
+    sectionIndent :: String
+    sectionIndent = indentFor (head startOfSection)
+    section :: [String]
+    section = takeWhile ((/= sectionIndent) . indentFor) (fromMaybe [] $ maybeTail startOfSection)
+  in section
 
 maybeTail :: [a] -> Maybe [a]
 maybeTail [] = Nothing
@@ -76,15 +116,22 @@ isPerfective :: Tense -> Bool
 isPerfective = flip elem [Futureperfect, Perfect, Pluperfect]
 
 conjugate :: ConjugationTable -> Mood -> Voice -> Tense -> GrammaticalPerson -> GrammaticalNumber -> Verb -> Maybe String
-conjugate _ _ Passive _ _ _ (Regular _ _ _ _ Nothing)   = Nothing
-conjugate _ Subjunctive _ Future _ _ _                  = Nothing
-conjugate _ Subjunctive _ Futureperfect _ _ _           = Nothing
-conjugate table mood voice tense person number verb     = case (voice, isPerfective tense) of
-    (Passive, True)     -> perfectPassiveParticiple
-    (Active, True)      -> Just (perfectStem ++ ending)
-    (_, False)          -> Just (stem ++ ending)
-  where
-    (Regular conjugation firstPerson infinitive perfect perfectPassiveParticiple) = verb
-    stem = pord 3 infinitive
-    perfectStem = init perfect
-    ending = table DM.! (conjugation, mood, voice, tense, person, number)
+conjugate _ _ Passive _ _ _ (Regular _ _ _ _ Nothing)       = Nothing
+conjugate _ _ Passive _ _ _ (Irregular _ _ _ Nothing _ )    = Nothing
+conjugate _ Subjunctive _ Future _ _ _                      = Nothing
+conjugate _ Subjunctive _ Futureperfect _ _ _               = Nothing
+conjugate table mood voice tense person number verb         = case (verb) of
+  (Regular conjugation firstPerson infinitive perfect perfectPassiveParticiple) ->
+    case (voice, isPerfective tense) of
+      (Passive, True)     -> perfectPassiveParticiple
+      (Active, True)      -> Just (perfectStem ++ ending)
+      (_, False)          -> Just (stem ++ ending)
+    where
+      (Regular conjugation firstPerson infinitive perfect perfectPassiveParticiple) = verb
+      stem = pord 3 infinitive
+      perfectStem = init perfect
+      ending = table DM.! (conjugation, mood, voice, tense, person, number)
+  (Irregular firstPerson infinitive perfect perfectPassiveParticiple conjugationTable) ->
+    case ((mood, voice, tense, person, number) `elem` DM.keys conjugationTable) of
+      True    -> Just $ conjugationTable DM.! (mood, voice, tense, person, number)
+      False   -> Nothing
