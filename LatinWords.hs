@@ -44,7 +44,7 @@ readRegularTable = do
         numbers = [Singular, Plural]
       in
         zip headings endings
-    conjugations = [1]
+    conjugations = [1, 2, 3, 4]
     moods = [Indicative, Subjunctive]
     voices = [Active, Passive]
     tenses = [Future, Futureperfect, Imperfect, Pluperfect, Present, Perfect]
