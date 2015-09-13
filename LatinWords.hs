@@ -70,7 +70,7 @@ maybeLast [] = Nothing
 maybeLast xs = Just (last xs)
 
 pord :: Int -> [a] -> [a]
-pord n = revere . drop n . reverse
+pord n = reverse . drop n . reverse
 
 isPerfective :: Tense -> Bool
 isPerfective = flip elem [Futureperfect, Perfect, Pluperfect]
