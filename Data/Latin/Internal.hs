@@ -18,16 +18,14 @@ data NounGender = Feminine
                 | Masculine
                 | Neuter deriving (Show, Eq, Read)
 
-data Verb = DepVerb (Int, Int)      -- the conjugation
-                    String          -- the present stem
-                    String          -- the perfect stem
-          | IntVerb (Int, Int)      -- the conjugation
-                    String          -- the present stem
-                    String          -- the perfect stem
-          | TrsVerb (Int, Int)      -- the conjugation
-                    String          -- the present stem
-                    String          -- the perfect stem
-                    String          -- the perfect passive stem
+data Verb = Verb (Int, Int)         -- the conjugation
+                 VerbalCategory
+                 (Maybe String)     -- present active stem
+                 (Maybe String)     -- infinitive stem
+                 (Maybe String)     -- present passive stem
+                 (Maybe String)     -- perfect active stem
+                 (Maybe String)     -- perfect passive stem
+                 deriving (Show, Eq)
 
 
 data VerbalCategory = Deponent
@@ -36,6 +34,7 @@ data VerbalCategory = Deponent
                     | OtherVerbalCategory deriving (Eq, Ord, Show)
 
 data VerbalForm = PresActiveStem
+                | InfinitiveStem
                 | PresPassiveStem
                 | PastActiveStem
                 | PastPassiveStem
