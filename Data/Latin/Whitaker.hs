@@ -31,6 +31,10 @@ getWId (WV _ _ _ _ wId) = wId
 getWId (WN _ _ _ _ _ _ wId) = wId
 getWId _ = 0
 
+getWForm :: WhitakerLine -> VerbalForm
+getWForm (WV _ _ _ wForm _) = wForm
+getWForm _ = PastPassiveStem
+
 parseWhitakerLine :: String -> WhitakerLine
 parseWhitakerLine line = case words line of
     [stem, "V", conjOneS, conjTwoS, vCatS, vFormS, idS] ->
@@ -90,7 +94,7 @@ whitakerLinesToDLI = collectStragglers . foldl' convertLines ([],[],[])
         searchForParts :: Int -> ([WhitakerLine], [WhitakerLine])
         searchForParts wIdent = break ((wIdent ==) . getWId) wLines
         sortByVerbPart :: [WhitakerLine] -> [WhitakerLine]
-        sortByVerbPart = sortBy (comparing wvForm)
+        sortByVerbPart = sortBy (comparing getWForm)
       in case wLine of
         WV _ _ vCat _ vId -> let
             (withoutMe, myOtherParts) = searchForParts vId
