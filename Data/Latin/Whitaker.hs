@@ -134,15 +134,17 @@ parseWhitakerLine line = case words line of
             (readnCase rStemTypeS)
             ""
       _ -> WUnparseable
-    "V":(conjOneS:(conjTwoS:(rTenseS:(rVoiceS:(rMoodS:(rPersonS:(rNumberS:(rStemTypeS:(_:(rEnding:_)))))))))) ->
-      WVR (read conjOneS, read conjTwoS)
-          (readvTense rTenseS)
-          (readvVoice rVoiceS)
-          (readvMood rMoodS)
-          (read rPersonS)
-          (readnNumber rNumberS)
-          (readvForm rStemTypeS)
-          rEnding
+    "V":rest -> case take 10 rest of
+      [conjOneS, conjTwoS, rTenseS, rVoiceS, rMoodS, rPersonS, rNumberS, rStemTypeS, _, rEnding] ->
+        WVR (read conjOneS, read conjTwoS)
+            (readvTense rTenseS)
+            (readvVoice rVoiceS)
+            (readvMood rMoodS)
+            (read rPersonS)
+            (readnNumber rNumberS)
+            (readvForm rStemTypeS)
+            rEnding
+      _ -> WUnparseable
     _ ->
       WUnparseable
 
