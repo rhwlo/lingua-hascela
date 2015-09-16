@@ -69,7 +69,8 @@ readnGender :: String -> NounGender
 readnGender "F"     = Feminine
 readnGender "M"     = Masculine
 readnGender "N"     = Neuter
-readnGender _       = Common        -- usually "C", sometimes "X"
+readnGender "X"     = GenderX
+readnGender _       = Common
 
 readnCase :: String
           -> NounCase
@@ -117,15 +118,22 @@ parseWhitakerLine line = case words line of
         WN stem (read declOneS, read declTwoS)
            (readnGender nGenderS) nKind (readnCase nCaseS)
            intactStem (read idS)
-    "N":(declOneS:(declTwoS:(rCaseS:(rGenderS:(rNumberS:(rStemTypeS:(_:(rEndingS:_)))))))) ->
-      WNR (read declOneS, read declTwoS)
-          (readnCase rCaseS)
-          (readnNumber rNumberS)
-          (readnGender rGenderS)
-          (readnCase rStemTypeS)
-          (if length (words line) < 11
-            then ""
-            else rEndingS)
+    "N":rest -> case take 10 rest of
+      [declOneS, declTwoS, rCaseS, rNumberS, rGenderS, rStemTypeS, _, rEndingS, _, _] ->
+        WNR (read declOneS, read declTwoS)
+            (readnCase rCaseS)
+            (readnNumber rNumberS)
+            (readnGender rGenderS)
+            (readnCase rStemTypeS)
+            rEndingS
+      [declOneS, declTwoS, rCaseS, rNumberS, rGenderS, rStemTypeS, _, _, _] ->
+        WNR (read declOneS, read declTwoS)
+            (readnCase rCaseS)
+            (readnNumber rNumberS)
+            (readnGender rGenderS)
+            (readnCase rStemTypeS)
+            ""
+      _ -> WUnparseable
     "V":(conjOneS:(conjTwoS:(rTenseS:(rVoiceS:(rMoodS:(rPersonS:(rNumberS:(rStemTypeS:(_:(rEnding:_)))))))))) ->
       WVR (read conjOneS, read conjTwoS)
           (readvTense rTenseS)

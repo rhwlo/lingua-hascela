@@ -1,7 +1,8 @@
 module Data.Latin.Internal where
 
+import Control.Applicative
 import qualified Data.Map as DM
-import Control.Monad (mplus)
+import Text.Printf
 
 type ConjugationRules = DM.Map ConjugationTuple (VerbalForm, String)
 
@@ -27,6 +28,7 @@ data NounCase = Ablative
 
 data NounGender = Common
                 | Feminine
+                | GenderX
                 | Masculine
                 | Neuter deriving (Show, Eq, Ord, Read)
 
@@ -69,6 +71,20 @@ data VerbalForm = PresActiveStem
                 | PastPassiveStem
                 | OtherVerbalForm deriving (Eq, Ord, Show)
 
+-- error types
+type FailedDeclension =  (Noun, NounCase, NounNumber, String)
+type FailedConjugation = (Verb, VerbTense, VerbVoice, VerbMood, Int, NounNumber, String)
+
+(||:<) :: Maybe b -> a -> Either a b
+Nothing ||:< f  = Left f
+(Just x) ||:< _ = Right x
+
+infixl 4 ||:<
+
+recoverEither :: Either a b -> Either a b -> Either a b
+(Left _) `recoverEither` r = r
+l `recoverEither` _        = l
+
 verbStemLookup :: Verb -> VerbalForm -> Maybe String
 verbStemLookup verb vForm = case vForm of
   PresActiveStem  -> vPresActiveStem verb
@@ -81,50 +97,60 @@ verbStemLookup verb vForm = case vForm of
 nounStemLookup :: Noun -> NounCase -> Maybe String
 nounStemLookup noun nForm = case nForm of
   Nominative  -> Just (nomStem noun)
-  Genitive    -> genStem noun
+  Genitive    -> genStem noun <|> nounStemLookup noun Nominative
   _           -> Nothing
 
-conjugate :: ConjugationRules       -- the conjugation rules to operate under
-          -> Verb                   -- the verb to conjugate
+conjugate :: ConjugationRules                -- the conjugation rules to operate under
+          -> Verb                            -- the verb to conjugate
           -> VerbTense
           -> VerbVoice
           -> VerbMood
-          -> Int                    -- person (1..3)
+          -> Int                             -- person (1..3)
           -> NounNumber
-          -> Maybe String           -- perhaps a conjugated verb
+          -> Either FailedConjugation String -- either a conjugated verb or the reason it failed
 conjugate rules verb tense voice mood person number =
       case vCat verb of
         Deponent ->
           conjugate rules (dedeponent verb) tense voice mood person number
         _ -> let
-            attachEnding :: (VerbalForm, String) -> Maybe String
-            attachEnding (vForm, ending) = (++ ending) <$> verbStemLookup verb vForm
-            byConjugation :: (Int, Int) -> Maybe (VerbalForm, String)
+            failConjugation :: String -> FailedConjugation
+            failConjugation = (,,,,,,) verb tense voice mood person number
+            attachEnding :: (VerbalForm, String) -> Either FailedConjugation String
+            attachEnding (vForm, ending) = (++ ending) <$> (verbStemLookup verb vForm
+                                                            ||:< failConjugation ("Couldn't find " ++ show vForm))
+            byConjugation :: (Int, Int) -> Either FailedConjugation (VerbalForm, String)
             byConjugation conj = DM.lookup (conj, tense, voice, mood, person, number) rules
+                                 ||:< failConjugation ("Failed lookup: " ++ show conj)
           in
             (byConjugation (vConj verb) >>= attachEnding)
-              `mplus` (byConjugation (fst (vConj verb), 0) >>= attachEnding)
-              `mplus` (byConjugation (0, 0) >>= attachEnding)
+              `recoverEither` (byConjugation (fst (vConj verb), 0) >>= attachEnding)
+              `recoverEither` (byConjugation (0, 0) >>= attachEnding)
 
 decline :: DeclensionRules
         -> Noun
         -> NounCase
         -> NounNumber
-        -> Maybe String
+        -> Either FailedDeclension String
 decline rules noun nCase nNumber = if intactNom noun && nCase == Nominative && nNumber == Singular
   then
-    Just (nomStem noun)
+    Right (nomStem noun)
   else
     let
-      attachEnding :: (NounCase, String) -> Maybe String
-      attachEnding (nForm, ending) = (++ ending) <$> nounStemLookup noun nForm
-      byDeclensionAndGender :: (Int, Int) -> NounGender -> Maybe (NounCase, String)
+      failDeclension :: String -> FailedDeclension
+      failDeclension = (,,,) noun nCase nNumber
+      attachEnding :: (NounCase, String) -> Either FailedDeclension String
+      attachEnding (nForm, ending) = (++ ending) <$> (nounStemLookup noun nForm
+                                                      ||:< failDeclension ("Couldn't find " ++ show nForm))
+      byDeclensionAndGender :: (Int, Int) -> NounGender -> Either FailedDeclension (NounCase, String)
       byDeclensionAndGender decl nGender = DM.lookup (decl, nCase, nNumber, nGender) rules
+                                            ||:< failDeclension (uncurry (printf "Failed lookup: %s (%i, %i)" (show nGender)) decl)
     in
       (byDeclensionAndGender (declension noun) (gender noun) >>= attachEnding)
-        `mplus` (byDeclensionAndGender (declension noun) Common >>= attachEnding)
-        `mplus` (byDeclensionAndGender (fst (declension noun), 0) (gender noun) >>= attachEnding)
-        `mplus` (byDeclensionAndGender (fst (declension noun), 0) Common >>= attachEnding)
+        `recoverEither` (byDeclensionAndGender (declension noun) Common >>= attachEnding)
+        `recoverEither` (byDeclensionAndGender (declension noun) GenderX >>= attachEnding)
+        `recoverEither` (byDeclensionAndGender (fst (declension noun), 0) (gender noun) >>= attachEnding)
+        `recoverEither` (byDeclensionAndGender (fst (declension noun), 0) Common >>= attachEnding)
+        `recoverEither` (byDeclensionAndGender (fst (declension noun), 0) GenderX >>= attachEnding)
 
 dedeponent :: Verb
            -> Verb
@@ -132,9 +158,9 @@ dedeponent verb = case vCat verb of
   Deponent ->
     Verb (vConj verb)
          Intransitive
-         (vPresPassivStem verb)
+         (vPresPassivStem verb <|> vPresActiveStem verb)
          (vInfinitiveStem verb)
-         (vPresActiveStem verb)
-         (vPerfPassivStem verb)
+         (vPresActiveStem verb <|> vPresPassivStem verb)
          (vPerfActiveStem verb)
+         (vPerfPassivStem verb)
   _ -> verb
