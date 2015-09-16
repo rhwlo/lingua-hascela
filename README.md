@@ -6,12 +6,12 @@ Latin words. Currently it uses the `STEMFILE.GEN` and `INFLECTS.LAT` from
 
 Currently it can:
 - conjugate verbs via `Data.Latin.Internal.conjugate`
+- decline nouns via `Data.Latin.Internal.decline`
 - parse [regular] nouns and verbs from Whitaker’s `STEMFILE.GEN`
 - parse rules for declension and conjugation from Whitaker’s `INFLECTS.LAT`
 
 In the future, it [hopefully] will:
 - conjugate irregular verbs
-- decline nouns
 - decline adjectives
 - decline pronouns
 - parse adjectives, adverbs, and pronouns from `STEMFILE.GEN`
