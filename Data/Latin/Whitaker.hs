@@ -89,7 +89,9 @@ readnNumber _       = Plural
 readvMood :: String
           -> VerbMood
 readvMood "SUB" = Subjunctive
-readvMood _     = Indicative
+readvMood "IND" = Indicative
+readvMood "IMP" = Imperative
+readvMood _     = UnknownMood
 
 readvTense :: String
            -> VerbTense

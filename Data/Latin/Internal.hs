@@ -52,8 +52,10 @@ data VerbTense = Present
 data VerbVoice = Active
                | Passive deriving (Show, Eq, Ord, Read)
 
-data VerbMood = Indicative
-              | Subjunctive deriving (Show, Eq, Ord, Read)
+data VerbMood = Imperative
+              | Indicative
+              | Subjunctive
+              | UnknownMood deriving (Show, Eq, Ord, Read)
 
 data VerbalCategory = Deponent
                     | Intransitive
