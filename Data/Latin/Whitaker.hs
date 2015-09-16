@@ -12,6 +12,7 @@ import Data.Latin.Internal (
   VerbalForm(..))
 
 import Data.List (foldl', sortBy)
+import qualified Data.Map as DM
 import Data.Ord (comparing)
 
 import qualified Data.Latin.Internal as DLI
@@ -60,7 +61,6 @@ readvCat "TRANS"    = Transitive
 readvCat _          = OtherVerbalCategory
 
 readvForm :: String -> VerbalForm
-readvForm "2"       = PresPassiveStem
 readvForm "3"       = PastActiveStem
 readvForm "4"       = PastPassiveStem
 readvForm _         = PresActiveStem
@@ -115,7 +115,7 @@ parseWhitakerLine line = case words line of
         WN stem (read declOneS, read declTwoS)
            (readnGender nGenderS) nKind (readnCase nCaseS)
            intactStem (read idS)
-    "N":(declOneS:(declTwoS:(rCaseS:(rGenderS:(rNumberS:(rStemTypeS:(rEndingS:_))))))) ->
+    "N":(declOneS:(declTwoS:(rCaseS:(rGenderS:(rNumberS:(rStemTypeS:(_:(rEndingS:_)))))))) ->
       WNR (read declOneS, read declTwoS)
           (readnCase rCaseS)
           (readnNumber rNumberS)
@@ -135,6 +135,22 @@ parseWhitakerLine line = case words line of
           rEnding
     _ ->
       WUnparseable
+
+whitakerRulesToDLI :: [WhitakerLine]
+                   -> (DLI.ConjugationRules,
+                       DLI.DeclensionRules)
+whitakerRulesToDLI = foldl' convertRulesToDLI (mempty, mempty)
+  where
+    convertRulesToDLI :: (DLI.ConjugationRules, DLI.DeclensionRules)
+                      -> WhitakerLine
+                      -> (DLI.ConjugationRules, DLI.DeclensionRules)
+    convertRulesToDLI (dliConjRules, dliDeclRules) wLine = case wLine of
+      WVR conj tense voice mood person number stemType ending ->
+        (DM.insert (conj, tense, voice, mood, person, number) (stemType, ending) dliConjRules, dliDeclRules)
+      WNR decl casus number gender stemType ending ->
+        (dliConjRules, DM.insert (decl, casus, number, gender) (stemType, ending) dliDeclRules)
+      _ ->
+        (dliConjRules, dliDeclRules)
 
 whitakerLinesToDLI :: [WhitakerLine]            -- the Whitaker Lines to convert into Data.Latin
                    -> ([DLI.Noun],              -- the Whitaker Lines that converted successfully into Nouns
