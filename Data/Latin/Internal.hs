@@ -75,6 +75,50 @@ data VerbalForm = PresActiveStem
 type FailedDeclension =  (Noun, NounCase, NounNumber, String)
 type FailedConjugation = (Verb, VerbTense, VerbVoice, VerbMood, Int, NounNumber, String)
 
+class Abbreviable a where
+  abbreviate :: a -> String
+
+instance Abbreviable VerbTense where
+  abbreviate Present        = "PRES"
+  abbreviate Imperfect      = "IMPF"
+  abbreviate Future         = "FUT "
+  abbreviate Perfect        = "PERF"
+  abbreviate Futureperfect  = "FUTP"
+  abbreviate Pluperfect     = "PLUP"
+
+instance Abbreviable VerbMood where
+  abbreviate Subjunctive    = "SUBJ"
+  abbreviate Indicative     = "IND "
+  abbreviate Imperative     = "IMP "
+  abbreviate _              = " X  "
+
+instance Abbreviable VerbVoice where
+  abbreviate Active         = "ACT "
+  abbreviate Passive        = "PASS"
+
+instance Abbreviable NounNumber where
+  abbreviate Singular       = "SING"
+  abbreviate Plural         = "PLUR"
+
+instance Abbreviable NounCase where
+  abbreviate Ablative       = "ABL"
+  abbreviate Accusative     = "ACC"
+  abbreviate Dative         = "DAT"
+  abbreviate Genitive       = "GEN"
+  abbreviate Nominative     = "NOM"
+  abbreviate Vocative       = "VOC"
+
+instance Abbreviable NounGender where
+  abbreviate Common         = "UTR"
+  abbreviate Feminine       = "FEM"
+  abbreviate Masculine      = "MSC"
+  abbreviate Neuter         = "NEU"
+  abbreviate GenderX        = " X "
+
+
+instance Abbreviable Int where
+  abbreviate                = show
+
 (||:<) :: Maybe b -> a -> Either a b
 Nothing ||:< f  = Left f
 (Just x) ||:< _ = Right x
